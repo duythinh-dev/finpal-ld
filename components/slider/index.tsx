@@ -43,19 +43,41 @@ const courses = [
 const CourseSlider = () => {
   return (
     <div className="w-full px-4">
-      <Swiper
-        slidesPerView={3}
-        spaceBetween={20}
-        navigation={true}
-        modules={[Navigation]}
-        breakpoints={{
-          1024: { slidesPerView: 3 },
-          768: { slidesPerView: 2 },
-          0: { slidesPerView: 1 },
-        }}
-      >
+      <div className="hidden md:block">
+        <Swiper
+          slidesPerView={3}
+          spaceBetween={20}
+          navigation={true}
+          modules={[Navigation]}
+          breakpoints={{
+            1024: { slidesPerView: 3 },
+            768: { slidesPerView: 2 },
+            0: { slidesPerView: 1 },
+          }}
+        >
+          {courses.map((course) => (
+            <SwiperSlide key={course.id}>
+              <div className="relative w-full">
+                <img
+                  src={course.image}
+                  alt={course.title}
+                  className="h-fit w-full object-cover"
+                />
+                <Link
+                  className={`absolute bottom-[5%] left-[27%] md:px-8 px-6 text-md md:text-xl py-2  text-white font-semibold rounded-full  transition-colors`}
+                  style={{ backgroundColor: `#${course.color}` }}
+                  href={`/courses/${course.path}`}
+                >
+                  Đăng ký
+                </Link>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+      <div className="flex items-center justify-center flex-wrap md:hidden">
         {courses.map((course) => (
-          <SwiperSlide key={course.id}>
+          <div key={course.id} className="md:hidden mb-6">
             <div className="relative w-full">
               <img
                 src={course.image}
@@ -63,16 +85,16 @@ const CourseSlider = () => {
                 className="h-fit w-full object-cover"
               />
               <Link
-                className={`absolute bottom-[5%] left-[27%] md:px-8 px-6 text-md md:text-xl py-2  text-white font-semibold rounded-full  transition-colors`}
+                className={`absolute bottom-[5%] left-[27%] md:px-8 px-4 text-md md:text-xl py-1 text-white font-semibold rounded-full  transition-colors`}
                 style={{ backgroundColor: `#${course.color}` }}
                 href={`/courses/${course.path}`}
               >
                 Đăng ký
               </Link>
             </div>
-          </SwiperSlide>
+          </div>
         ))}
-      </Swiper>
+      </div>
     </div>
   );
 };
