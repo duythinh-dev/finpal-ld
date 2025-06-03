@@ -52,9 +52,9 @@ export default function DashboardDetail() {
               </div>
             </div>
           </div>
-          <button className="text-gray-500 hover:text-gray-700">
+          <Link href={"/"} className="text-gray-500 hover:text-gray-700">
             <X className="h-5 w-5" />
-          </button>
+          </Link>
         </div>
 
         {/* Dashboard Iframe */}
