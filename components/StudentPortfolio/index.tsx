@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Share2, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export default function StudentPortfolio() {
   const projects = [
@@ -276,9 +277,12 @@ export default function StudentPortfolio() {
                   {/* Title with icon */}
                   <div className="flex items-center gap-2">
                     <div className="w-1 h-4 bg-blue-600 rounded-full"></div>
-                    <h3 className="font-semibold text-blue-600 text-sm">
+                    <Link
+                      href={"/detail/1"}
+                      className="font-semibold text-blue-600 text-sm"
+                    >
                       {project.title}
-                    </h3>
+                    </Link>
                   </div>
 
                   {/* Author and Date */}
