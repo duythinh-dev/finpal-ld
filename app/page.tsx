@@ -11,46 +11,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 import CourseSlider from "@/components/slider";
-import BusinessIntelligenceLanding from "@/components/Form";
+import BusinessIntelligenceLanding from "@/components/BusinessIntelligenceLanding";
 import AnalyticsCapabilities from "@/components/AnalyticsCapabilities";
 import StudentPortfolio from "@/components/StudentPortfolio";
 
 export default function Home() {
-  const courses = [
-    {
-      id: "data-storytelling",
-      title: "Data Storytelling",
-      description: "Học cách truyền đạt thông tin dữ liệu một cách hiệu quả",
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-500",
-      icon: <BarChart3 className="h-8 w-8 text-white" />,
-    },
-    {
-      id: "power-bi-analytics",
-      title: "Power BI Analytics",
-      description: "Chuyên sâu về Power BI cho phân tích dữ liệu",
-      color: "from-orange-500 to-orange-600",
-      bgColor: "bg-orange-500",
-      icon: <LineChart className="h-8 w-8 text-white" />,
-    },
-    {
-      id: "sql-analytics",
-      title: "SQL Analytics",
-      description: "Làm chủ SQL cho phân tích dữ liệu chuyên nghiệp",
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-500",
-      icon: <Database className="h-8 w-8 text-white" />,
-    },
-    {
-      id: "advanced-excel",
-      title: "Advanced Excel",
-      description: "Thành thạo Excel nâng cao cho phân tích dữ liệu",
-      color: "from-green-500 to-green-600",
-      bgColor: "bg-green-500",
-      icon: <PieChart className="h-8 w-8 text-white" />,
-    },
-  ];
-
   return (
     <main className="min-h-screen bg-gray-50">
       <section className="lg:min-h-screen relative bg-cover bg-center">

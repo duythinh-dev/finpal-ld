@@ -1,3 +1,4 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -6,25 +7,39 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown, Heart, Share2, X } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Expand,
+  Heart,
+  Lightbulb,
+  Share2,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function DashboardDetail() {
+  const [openItems, setOpenItems] = useState<string[]>(["overview"]);
+
+  const handleValueChange = (value: string[]) => {
+    setOpenItems(value);
+  };
   const relatedDashboards = [
     {
       id: 1,
       title: "Sales Performance Dashboard",
       author: "Nguyen Van A",
       date: "12.10.2024",
-      image: "/placeholder.svg?height=120&width=240&text=Sales+Dashboard",
+      image: "/images/image-detail.png",
     },
     {
       id: 2,
       title: "Sales Performance Dashboard",
       author: "Nguyen Van B",
       date: "10.10.2024",
-      image: "/placeholder.svg?height=120&width=240&text=Sales+Dashboard",
+      image: "/images/image-detail.png",
     },
   ];
 
@@ -47,7 +62,7 @@ export default function DashboardDetail() {
                 <span>•</span>
                 <span>15/10/2024</span>
                 <Badge className="bg-yellow-500 text-black text-xs ml-1">
-                  Premium
+                  Power BI
                 </Badge>
               </div>
             </div>
@@ -59,428 +74,209 @@ export default function DashboardDetail() {
 
         {/* Dashboard Iframe */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
-          <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-            {/* This would be replaced with an actual Power BI iframe in production */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-blue-700 p-4">
-              {/* Mock Power BI Dashboard */}
-              <div className="h-full flex flex-col">
-                {/* Header */}
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
-                      <span className="text-white text-xs">BI</span>
-                    </div>
-                    <span className="text-white font-medium">
-                      Sales Overview
-                    </span>
-                  </div>
-                  <div className="flex gap-4">
-                    <span className="text-white/70 text-xs">Overview</span>
-                    <span className="text-white/70 text-xs">Products</span>
-                    <span className="text-white/70 text-xs">Solutions</span>
-                    <span className="text-white/70 text-xs">Customers</span>
-                  </div>
-                </div>
-
-                <div className="text-white/80 text-xs mb-4">
-                  All data is from 2020-2023 and is for demonstration purposes
-                  only
-                </div>
-
-                {/* Filter bar */}
-                <div className="flex justify-end gap-2 mb-4">
-                  <div className="flex items-center gap-1">
-                    <span className="text-white/70 text-xs">Date Range:</span>
-                    <div className="bg-blue-800/50 rounded px-2 py-1 text-white text-xs">
-                      2020-2023
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-white/70 text-xs">Model:</span>
-                    <div className="bg-blue-800/50 rounded px-2 py-1 text-white text-xs">
-                      All Models
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dashboard content */}
-                <div className="grid grid-cols-12 gap-4 flex-grow">
-                  {/* Revenue chart */}
-                  <div className="col-span-4 bg-blue-800/30 rounded p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white text-xs font-medium">
-                        Revenue
-                      </span>
-                      <div className="w-4 h-4 bg-blue-700/50 rounded flex items-center justify-center">
-                        <ChevronDown className="h-3 w-3 text-white/70" />
-                      </div>
-                    </div>
-                    <div className="h-32 flex items-end">
-                      <svg className="w-full h-24" viewBox="0 0 300 100">
-                        <defs>
-                          <linearGradient
-                            id="areaGradient"
-                            x1="0%"
-                            y1="0%"
-                            x2="0%"
-                            y2="100%"
-                          >
-                            <stop
-                              offset="0%"
-                              stopColor="#3b82f6"
-                              stopOpacity="0.3"
-                            />
-                            <stop
-                              offset="100%"
-                              stopColor="#3b82f6"
-                              stopOpacity="0.05"
-                            />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M0,80 C60,70 140,30 300,50 L300,100 L0,100 Z"
-                          fill="url(#areaGradient)"
-                          strokeWidth="0"
-                        />
-                        <path
-                          d="M0,80 C60,70 140,30 300,50"
-                          fill="none"
-                          stroke="#3b82f6"
-                          strokeWidth="2"
-                        />
-                        {[0, 60, 140, 220, 300].map((x, i) => (
-                          <circle
-                            key={i}
-                            cx={x}
-                            cy={
-                              i === 0
-                                ? 80
-                                : i === 1
-                                ? 70
-                                : i === 2
-                                ? 30
-                                : i === 3
-                                ? 40
-                                : 50
-                            }
-                            r="3"
-                            fill="#3b82f6"
-                          />
-                        ))}
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Sales by Year chart */}
-                  <div className="col-span-4 bg-blue-800/30 rounded p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white text-xs font-medium">
-                        Sales by Fiscal Year
-                      </span>
-                      <div className="w-4 h-4 bg-blue-700/50 rounded flex items-center justify-center">
-                        <ChevronDown className="h-3 w-3 text-white/70" />
-                      </div>
-                    </div>
-                    <div className="h-32 flex items-end justify-between px-2">
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
-                        <div key={month} className="flex flex-col items-center">
-                          <div
-                            className="w-3 bg-yellow-400"
-                            style={{ height: `${Math.random() * 60 + 20}px` }}
-                          ></div>
-                          <div className="text-white/50 text-[8px] mt-1">
-                            {month}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Category Summary */}
-                  <div className="col-span-4 bg-blue-800/30 rounded p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white text-xs font-medium">
-                        Category Summary
-                      </span>
-                      <div className="w-4 h-4 bg-blue-700/50 rounded flex items-center justify-center">
-                        <ChevronDown className="h-3 w-3 text-white/70" />
-                      </div>
-                    </div>
-                    <div className="h-32 flex items-center justify-center">
-                      <svg className="w-24 h-24" viewBox="0 0 42 42">
-                        <circle
-                          cx="21"
-                          cy="21"
-                          r="15.915"
-                          fill="transparent"
-                          stroke="#1e40af"
-                          strokeWidth="3"
-                        />
-                        <circle
-                          cx="21"
-                          cy="21"
-                          r="15.915"
-                          fill="transparent"
-                          stroke="#fbbf24"
-                          strokeWidth="3"
-                          strokeDasharray="60 40"
-                          strokeDashoffset="25"
-                        />
-                        <circle
-                          cx="21"
-                          cy="21"
-                          r="15.915"
-                          fill="transparent"
-                          stroke="#10b981"
-                          strokeWidth="3"
-                          strokeDasharray="25 75"
-                          strokeDashoffset="-35"
-                        />
-                        <circle cx="21" cy="21" r="10" fill="#1e3a8a" />
-                        <text
-                          x="21"
-                          y="21"
-                          dominantBaseline="middle"
-                          textAnchor="middle"
-                          fill="white"
-                          fontSize="8"
-                          fontWeight="bold"
-                        >
-                          $1.2M
-                        </text>
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Monthly data table */}
-                  <div className="col-span-6 bg-blue-800/30 rounded p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white text-xs font-medium">
-                        Monthly Data
-                      </span>
-                      <div className="w-4 h-4 bg-blue-700/50 rounded flex items-center justify-center">
-                        <ChevronDown className="h-3 w-3 text-white/70" />
-                      </div>
-                    </div>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-[8px] text-white/90">
-                        <thead>
-                          <tr className="border-b border-blue-700/50">
-                            <th className="text-left py-1">Month</th>
-                            <th className="text-right py-1">Revenue</th>
-                            <th className="text-right py-1">Expenses</th>
-                            <th className="text-right py-1">Profit</th>
-                            <th className="text-right py-1">Growth</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {["Jan", "Feb", "Mar", "Apr", "May"].map(
-                            (month, i) => (
-                              <tr
-                                key={month}
-                                className="border-b border-blue-700/30"
-                              >
-                                <td className="py-1">{month}</td>
-                                <td className="text-right py-1">$123,456</td>
-                                <td className="text-right py-1">$98,765</td>
-                                <td className="text-right py-1">$24,691</td>
-                                <td className="text-right py-1 text-green-400">
-                                  +12.3%
-                                </td>
-                              </tr>
-                            )
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  {/* Revenue Target */}
-                  <div className="col-span-3 bg-blue-800/30 rounded p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white text-xs font-medium">
-                        Revenue Target
-                      </span>
-                      <div className="w-4 h-4 bg-blue-700/50 rounded flex items-center justify-center">
-                        <ChevronDown className="h-3 w-3 text-white/70" />
-                      </div>
-                    </div>
-                    <div className="mb-2">
-                      <div className="text-white text-lg font-bold">
-                        $985.5K
-                      </div>
-                      <div className="text-white/70 text-[8px]">
-                        out of $1,250.0K
-                      </div>
-                    </div>
-                    <div className="h-2 bg-blue-900/50 rounded-full overflow-hidden mb-2">
-                      <div
-                        className="h-full bg-yellow-500 rounded-full"
-                        style={{ width: "78%" }}
-                      ></div>
-                    </div>
-                    <div className="text-white/70 text-[8px]">
-                      Annual Target
-                    </div>
-                  </div>
-
-                  {/* Returns by Year */}
-                  <div className="col-span-3 bg-blue-800/30 rounded p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white text-xs font-medium">
-                        Returns by Fiscal Year
-                      </span>
-                      <div className="w-4 h-4 bg-blue-700/50 rounded flex items-center justify-center">
-                        <ChevronDown className="h-3 w-3 text-white/70" />
-                      </div>
-                    </div>
-                    <div className="h-20 flex items-end justify-between px-2">
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
-                        <div key={month} className="flex flex-col items-center">
-                          <div
-                            className="w-2 bg-blue-400"
-                            style={{ height: `${Math.random() * 30 + 10}px` }}
-                          ></div>
-                          <div className="text-white/50 text-[6px] mt-1">
-                            {month}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* <iframe
+            src="https://example.com/dashboard"
+            title="Sales Performance Dashboard"
+            className="w-full h-[600px] border-0"
+          ></iframe> */}
+          <Image
+            src="/images/image-detail.png"
+            alt="Dashboard Preview"
+            width={1000}
+            height={600}
+            className="w-full h-auto object-cover"
+          />
         </div>
 
         {/* Bottom Content */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Left Column - Dashboard Description */}
-          <div className="md:col-span-2">
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+          <div className="w-full md:col-span-2">
+            <h2 className="text-xl font-medium text-gray-600 mb-6">
               Dashboard Description
             </h2>
+
             <Accordion
               type="multiple"
-              defaultValue={["overview", "business", "audience", "analytical"]}
+              value={openItems}
+              onValueChange={handleValueChange}
+              className="space-y-2"
             >
-              <AccordionItem
-                value="overview"
-                className="border-b border-gray-200"
-              >
-                <AccordionTrigger className="py-3 text-blue-600 hover:text-blue-700 font-medium">
-                  Overview
+              {/* Overview Section */}
+              <AccordionItem value="overview" className="border-none">
+                <AccordionTrigger className="flex items-center gap-2 py-3 px-0 hover:no-underline group">
+                  <div className="flex items-center gap-2 text-blue-600 font-medium">
+                    {openItems.includes("overview") ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                    Overview
+                  </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  This dashboard provides a comprehensive overview of sales
-                  performance across different dimensions.
+                <AccordionContent className="pb-6 pt-2">
+                  <div className="space-y-6 ml-6">
+                    {/* Business Objective */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="font-medium text-gray-700">
+                          Business Objective
+                        </span>
+                      </div>
+                      <ul className="ml-4 space-y-2 text-gray-600">
+                        <li className="flex items-start gap-2">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>Đối tượng: Marketing manager</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>
+                            Key metrics: CTR, Conversion rate, CPA, CPC
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Analytical Logic */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Lightbulb className="w-4 h-4 text-yellow-500" />
+                        <span className="font-medium text-gray-700">
+                          Analytical Logic
+                        </span>
+                      </div>
+                      <ul className="ml-6 space-y-2 text-gray-600">
+                        <li className="flex items-start gap-2">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>What: chuyện gì đang xảy ra ?</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Analytical Perspectives */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Expand className="w-4 h-4 text-blue-600" />
+                        <span className="font-medium text-gray-700">
+                          Analytical Perspectives
+                        </span>
+                      </div>
+                      <ul className="ml-6 space-y-2 text-gray-600">
+                        <li className="flex items-start gap-2">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>Snapshot: CTR, Conversion rate, CPA, CPC</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>
+                            Trend analysis: Clicks, Conversion by time series
+                            (seasonality)
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>Contribution</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>Detail table</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem
-                value="business"
-                className="border-b border-gray-200"
-              >
-                <AccordionTrigger className="py-3 text-gray-700 hover:text-blue-700 font-medium">
-                  Business Objective
+              {/* Channel Performance/User Behavior */}
+              <AccordionItem value="channel" className="border-none">
+                <AccordionTrigger className="flex items-center gap-2 py-3 px-0 hover:no-underline">
+                  <div className="flex items-center gap-2 text-blue-600 font-medium">
+                    {openItems.includes("channel") ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                    Channel Performance/User Behavior
+                  </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>KPI tracking (monthly, quarterly)</li>
-                    <li>Performance analysis (YoY, QoQ, MoM)</li>
-                    <li>
-                      Identify trends and patterns (seasonality, YOY, EOY)
-                    </li>
-                  </ul>
+                <AccordionContent className="pb-4 pt-2">
+                  <div className="ml-6 text-gray-600">
+                    <p>
+                      Analysis of performance across different sales channels
+                      and user behavior patterns.
+                    </p>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem
-                value="audience"
-                className="border-b border-gray-200"
-              >
-                <AccordionTrigger className="py-3 text-gray-700 hover:text-blue-700 font-medium">
-                  Audience
+              {/* Email Marketing */}
+              <AccordionItem value="email" className="border-none">
+                <AccordionTrigger className="flex items-center gap-2 py-3 px-0 hover:no-underline">
+                  <div className="flex items-center gap-2 text-blue-600 font-medium">
+                    {openItems.includes("email") ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                    Email Marketing
+                  </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  <ul className="list-disc pl-5">
-                    <li>Sales Manager, Marketing Manager</li>
-                  </ul>
+                <AccordionContent className="pb-4 pt-2">
+                  <div className="ml-6 text-gray-600">
+                    <p>
+                      Performance metrics for email marketing campaigns and
+                      their impact on conversions.
+                    </p>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem
-                value="analytical"
-                className="border-b border-gray-200"
-              >
-                <AccordionTrigger className="py-3 text-gray-700 hover:text-blue-700 font-medium">
-                  Analytical Perspectives
+              {/* Spending Efficiency */}
+              <AccordionItem value="spending" className="border-none">
+                <AccordionTrigger className="flex items-center gap-2 py-3 px-0 hover:no-underline">
+                  <div className="flex items-center gap-2 text-blue-600 font-medium">
+                    {openItems.includes("spending") ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                    Spending Efficiency
+                  </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Time Analysis (Monthly, Quarterly, YOY, MOM)</li>
-                    <li>Product Analysis (Categories, Products, Inventory)</li>
-                    <li>Regional Analysis (Countries, Cities, Stores)</li>
-                    <li>
-                      Customer Analysis (Segments, Behavior, Satisfaction)
-                    </li>
-                    <li>Profitability</li>
-                  </ul>
+                <AccordionContent className="pb-4 pt-2">
+                  <div className="ml-6 text-gray-600">
+                    <p>
+                      Analysis of marketing spend efficiency and ROI across
+                      different channels.
+                    </p>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem
-                value="channel"
-                className="border-b border-gray-200"
-              >
-                <AccordionTrigger className="py-3 text-gray-700 hover:text-blue-700 font-medium">
-                  Channel Performance/User Behavior
+              {/* Customer Segmentation */}
+              <AccordionItem value="customer" className="border-none">
+                <AccordionTrigger className="flex items-center gap-2 py-3 px-0 hover:no-underline">
+                  <div className="flex items-center gap-2 text-blue-600 font-medium">
+                    {openItems.includes("customer") ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                    Customer Segmentation
+                  </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  Analysis of performance across different sales channels and
-                  user behavior patterns.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="email" className="border-b border-gray-200">
-                <AccordionTrigger className="py-3 text-gray-700 hover:text-blue-700 font-medium">
-                  Email Marketing
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  Performance metrics for email marketing campaigns and their
-                  impact on sales.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem
-                value="spending"
-                className="border-b border-gray-200"
-              >
-                <AccordionTrigger className="py-3 text-gray-700 hover:text-blue-700 font-medium">
-                  Spending Efficiency
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  Analysis of marketing spend efficiency and ROI across
-                  different channels.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem
-                value="customer"
-                className="border-b border-gray-200"
-              >
-                <AccordionTrigger className="py-3 text-gray-700 hover:text-blue-700 font-medium">
-                  Customer Segmentation
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 pb-4">
-                  Detailed breakdown of customer segments and their purchasing
-                  behaviors.
+                <AccordionContent className="pb-4 pt-2">
+                  <div className="ml-6 text-gray-600">
+                    <p>
+                      Detailed breakdown of customer segments and their
+                      purchasing behaviors.
+                    </p>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
-
           {/* Right Column - Related Dashboards */}
           <div>
             <h2 className="text-lg font-semibold text-gray-700 mb-4">

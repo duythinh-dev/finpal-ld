@@ -1,4 +1,4 @@
-import Link from "next/link";
+"use client";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,8 +21,17 @@ import {
   CheckCircle,
   GraduationCap,
   User,
+  Check,
 } from "lucide-react";
 import { notFound } from "next/navigation";
+import React from "react";
+import { useSubmitForm } from "@/hooks/use-saveInfoUser";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type ColorScheme = {
   primary: string;
@@ -54,14 +63,30 @@ type Course = {
   colorScheme?: ColorScheme;
 };
 
+const options = [
+  { label: "Excel", value: "excel" },
+  { label: "Power BI", value: "powerbi" },
+  { label: "Tableau", value: "tableau" },
+  { label: "SQL", value: "sql" },
+  { label: "Python", value: "python" },
+  { label: "Chưa biết gì", value: "none" },
+];
+
 const courses: Record<string, Course> = {
   "business-intelligence": {
     title: "BIA - Business Intelligence Analytics",
     duration: "24 buổi (2 tiếng / buổi)",
-    logo: "/images/intelligence-logo.svg",
+    logo: "/images/storytelling-logo.svg",
     format: "Online & Offline",
     tools: ["Power BI", "SQL", "Power Query", "Advanced Excel"],
     certificates: ["Certificate", "Professional Profile"],
+    colorScheme: {
+      primary: "bg-blue-600",
+      gradient: "from-blue-500 to-blue-600",
+      light: "bg-blue-50",
+      border: "border-blue-600",
+      text: "text-blue-600",
+    },
     instructor: {
       name: "Trong Do Xuan, CMA, FMVA",
       title: "Performance Management & Analysis Manager",
@@ -132,73 +157,6 @@ const courses: Record<string, Course> = {
         ],
       },
     ],
-  },
-  "data-storytelling": {
-    title: "BIA - Data Storytelling",
-    duration: "24 buổi (2 tiếng / buổi)",
-    format: "Online & Offline",
-    logo: "/images/storytelling-logo.svg",
-    tools: ["Power BI", "Tableau", "Excel", "Presentation Tools"],
-    certificates: ["Certificate", "Professional Profile"],
-    instructor: {
-      name: "Trong Do Xuan, CMA, FMVA",
-      title: "Performance Management & Analysis Manager",
-      company: "Prudential Vietnam",
-      experience:
-        "8 năm kinh nghiệm phân tích trong các lĩnh vực Tài chính ngân hàng, Bảo hiểm, Sản xuất",
-      achievements: [
-        "CEO & Founder của FINPAL - Fintech phần tích tài chính",
-        "Finpal.com.vn",
-        "Founder của DataTecHub - Nền tảng giáo dục và tư vấn Business Intelligence",
-        "Chuyên gia về Data Storytelling và truyền đạt thông tin dữ liệu hiệu quả",
-      ],
-      image: "/placeholder.svg?height=200&width=200",
-    },
-    curriculum: [
-      {
-        title: "Cơ bản về Data Storytelling",
-        items: [
-          "Giới thiệu về Data Storytelling và tầm quan trọng",
-          "Hiểu về audience và mục đích truyền đạt",
-          "Cấu trúc một câu chuyện dữ liệu hiệu quả",
-          "Thực hành xây dựng narrative từ dữ liệu thô",
-        ],
-      },
-      {
-        title: "Visualization và Design Principles",
-        items: [
-          "Nguyên tắc thiết kế biểu đồ hiệu quả",
-          "Chọn loại biểu đồ phù hợp cho từng loại dữ liệu",
-          "Color theory và typography trong data visualization",
-          "Thực hành tạo dashboard storytelling với Power BI",
-        ],
-      },
-      {
-        title: "Advanced Storytelling Techniques",
-        items: [
-          "Kỹ thuật dẫn dắt cảm xúc qua dữ liệu",
-          "Sử dụng annotations và callouts hiệu quả",
-          "Interactive storytelling và user experience",
-          "Case studies từ các dự án thực tế",
-        ],
-      },
-      {
-        title: "Presentation và Communication",
-        items: [
-          "Kỹ năng thuyết trình với dữ liệu",
-          "Xử lý câu hỏi và phản biện từ audience",
-          "Tạo executive summary và key takeaways",
-          "Thực hành presentation cuối khóa",
-        ],
-      },
-    ],
-    colorScheme: {
-      primary: "bg-blue-600",
-      gradient: "from-blue-500 to-blue-600",
-      light: "bg-blue-50",
-      border: "border-blue-600",
-      text: "text-blue-600",
-    },
   },
   "power-bi-analytics": {
     title: "BIA - Power BI for Analytics",
@@ -360,6 +318,33 @@ const courses: Record<string, Course> = {
 export default function CoursePage({ params }: { params: { id: string } }) {
   const courseId = params.id;
   const course = courses[courseId as keyof typeof courses];
+  const { submit, status, error } = useSubmitForm();
+
+  const [formError, setFormError] = React.useState<string | null>(null);
+
+  type FormData = {
+    fullName: string;
+    phone: string;
+    email: string;
+    birthYear: string;
+    industry: string;
+    learningMode: string;
+    officeUsageRate: string;
+    appKnowledge: string[];
+    learningGoals: string;
+  };
+
+  const [formData, setFormData] = React.useState<FormData>({
+    fullName: "",
+    phone: "",
+    email: "",
+    birthYear: "",
+    industry: "",
+    learningMode: "",
+    officeUsageRate: "",
+    appKnowledge: [],
+    learningGoals: "",
+  });
 
   console.log("Course ID:", course);
 
@@ -367,6 +352,53 @@ export default function CoursePage({ params }: { params: { id: string } }) {
     notFound();
   }
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    if (name === "appKnowledge") {
+      const newValue = value.split(",").map((v) => v.trim());
+      setFormData((prev) => {
+        // prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+        return {
+          ...prev,
+          appKnowledge: prev.appKnowledge.includes(value)
+            ? prev.appKnowledge.filter((v) => v !== value)
+            : [...prev.appKnowledge, value],
+        };
+      });
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate required fields
+    if (
+      !formData.fullName ||
+      !formData.phone ||
+      !formData.email ||
+      !formData.birthYear ||
+      !formData.industry ||
+      !formData.learningMode ||
+      !formData.officeUsageRate ||
+      formData.appKnowledge.length === 0 ||
+      !formData.learningGoals
+    ) {
+      setFormError("Vui lòng điền đầy đủ thông tin bắt buộc.");
+      return;
+    }
+
+    setFormError(null);
+
+    submit({
+      ...formData,
+      appKnowledge: formData.appKnowledge.join(", "),
+      formType: courseId,
+    });
+  };
   const colorScheme = course.colorScheme || {
     primary: "bg-blue-600",
     gradient: "from-blue-600 to-blue-800",
@@ -586,48 +618,142 @@ export default function CoursePage({ params }: { params: { id: string } }) {
               >
                 <h2 className="text-2xl font-bold mb-6">Form Đăng ký</h2>
 
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
                     <Input
                       placeholder="Họ tên"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full"
+                      className={`bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full ${
+                        status === "error" && !formData.fullName
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      name="fullName"
+                      required
                     />
+                    {status === "error" && !formData.fullName && (
+                      <span className="text-red-200 text-xs">
+                        Vui lòng nhập họ tên
+                      </span>
+                    )}
                   </div>
 
                   <div>
                     <Input
                       placeholder="Số điện thoại"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full"
+                      className={`bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full ${
+                        status === "error" && !formData.phone
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                      value={formData.phone}
+                      onChange={handleChange}
+                      name="phone"
+                      required
                     />
+                    {status === "error" && !formData.phone && (
+                      <span className="text-red-200 text-xs">
+                        Vui lòng nhập số điện thoại
+                      </span>
+                    )}
                   </div>
 
                   <div>
                     <Input
                       type="email"
                       placeholder="Email"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full"
+                      className={`bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full ${
+                        status === "error" && !formData.email
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                      value={formData.email}
+                      onChange={handleChange}
+                      name="email"
+                      required
                     />
+                    {status === "error" && !formData.email && (
+                      <span className="text-red-200 text-xs">
+                        Vui lòng nhập email
+                      </span>
+                    )}
                   </div>
 
                   <div>
                     <Input
                       placeholder="Năm sinh (VD: 1993 → Nhập 1993)"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full"
+                      className={`bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full ${
+                        status === "error" && !formData.birthYear
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                      value={formData.birthYear}
+                      onChange={handleChange}
+                      name="birthYear"
+                      required
                     />
+                    {status === "error" && !formData.birthYear && (
+                      <span className="text-red-200 text-xs">
+                        Vui lòng nhập năm sinh
+                      </span>
+                    )}
                   </div>
 
                   <div>
                     <Input
                       placeholder="Lĩnh vực anh chị đang làm"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full"
+                      className={`bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full ${
+                        status === "error" && !formData.industry
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                      value={formData.industry}
+                      onChange={handleChange}
+                      name="industry"
+                      required
                     />
+                    {status === "error" && !formData.industry && (
+                      <span className="text-red-200 text-xs">
+                        Vui lòng nhập lĩnh vực
+                      </span>
+                    )}
                   </div>
 
                   <div>
-                    <Input
-                      placeholder="Anh chị có tiền kinh thức học"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 h-12 rounded-full"
-                    />
+                    <Select
+                      value={formData.learningMode}
+                      onValueChange={(value) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          learningMode: value,
+                        }))
+                      }
+                      name="learningMode"
+                      required
+                    >
+                      <SelectTrigger
+                        className={`bg-white/10 border-white/20 text-white h-12 rounded-full ${
+                          status === "error" && !formData.learningMode
+                            ? "border-red-500"
+                            : ""
+                        }`}
+                      >
+                        <SelectValue placeholder="Anh chị ưu tiên hình thức học" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="online">Online</SelectItem>
+                        <SelectItem value="offline">Offline</SelectItem>
+                        <SelectItem value="any">
+                          Hình thức nào cũng được
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {status === "error" && !formData.learningMode && (
+                      <span className="text-red-200 text-xs">
+                        Vui lòng chọn hình thức học
+                      </span>
+                    )}
                   </div>
 
                   <div className="space-y-3">
@@ -643,9 +769,25 @@ export default function CoursePage({ params }: { params: { id: string } }) {
                     </p>
 
                     <div>
-                      <Select>
-                        <SelectTrigger className="bg-white/10 border-white/20 text-white h-12 rounded-full">
-                          <SelectValue placeholder="Liên tục (trên 5 tiếng/ngày)" />
+                      <Select
+                        value={formData.officeUsageRate}
+                        onValueChange={(value) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            officeUsageRate: value,
+                          }))
+                        }
+                        name="officeUsageRate"
+                        required
+                      >
+                        <SelectTrigger
+                          className={`bg-white/10 border-white/20 text-white h-12 rounded-full ${
+                            status === "error" && !formData.officeUsageRate
+                              ? "border-red-500"
+                              : ""
+                          }`}
+                        >
+                          <SelectValue placeholder="Chọn mức độ sử dụng" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="continuous">
@@ -662,43 +804,132 @@ export default function CoursePage({ params }: { params: { id: string } }) {
                           </SelectItem>
                         </SelectContent>
                       </Select>
+                      {status === "error" && !formData.officeUsageRate && (
+                        <span className="text-red-200 text-xs">
+                          Vui lòng chọn mức độ sử dụng
+                        </span>
+                      )}
                     </div>
 
                     <p className="text-white/90 text-sm">
                       Anh chị có biết có khả năng tự sử dụng ứng dụng nào dưới
-                      đây)
+                      đây
                     </p>
 
                     <div>
-                      <Select>
-                        <SelectTrigger className="bg-white/10 border-white/20 text-white h-12 rounded-full">
-                          <SelectValue placeholder="Excel" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="excel">Excel</SelectItem>
-                          <SelectItem value="powerbi">Power BI</SelectItem>
-                          <SelectItem value="tableau">Tableau</SelectItem>
-                          <SelectItem value="sql">SQL</SelectItem>
-                          <SelectItem value="python">Python</SelectItem>
-                          <SelectItem value="none">Chưa biết gì</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={`w-full justify-between bg-white/10 border-white/20 text-white h-12 rounded-full ${
+                              status === "error" &&
+                              formData.appKnowledge.length === 0
+                                ? "border-red-500"
+                                : ""
+                            }`}
+                          >
+                            {formData.appKnowledge.length > 0
+                              ? formData.appKnowledge
+                                  .map(
+                                    (v) =>
+                                      options.find((o) => o.value === v)?.label
+                                  )
+                                  .join(", ")
+                              : "Chọn kỹ năng"}
+                            <Check className="ml-2 h-4 w-4 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[200px] bg-white text-black rounded-lg">
+                          <div className="flex flex-col space-y-2">
+                            {options.map((option) => (
+                              <label
+                                key={option.value}
+                                className="flex items-center gap-2 cursor-pointer"
+                              >
+                                <Checkbox
+                                  checked={formData.appKnowledge.includes(
+                                    option.value
+                                  )}
+                                  onCheckedChange={() => {
+                                    setFormData((prev) => {
+                                      if (option.value === "none") {
+                                        return {
+                                          ...prev,
+                                          appKnowledge: ["none"],
+                                        };
+                                      }
+                                      if (prev.appKnowledge.includes("none")) {
+                                        return {
+                                          ...prev,
+                                          appKnowledge: [option.value],
+                                        };
+                                      }
+                                      if (
+                                        prev.appKnowledge.includes(option.value)
+                                      ) {
+                                        return {
+                                          ...prev,
+                                          appKnowledge:
+                                            prev.appKnowledge.filter(
+                                              (v) => v !== option.value
+                                            ),
+                                        };
+                                      }
+                                      return {
+                                        ...prev,
+                                        appKnowledge: [
+                                          ...prev.appKnowledge,
+                                          option.value,
+                                        ],
+                                      };
+                                    });
+                                  }}
+                                />
+                                <span>{option.label}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                      {status === "error" &&
+                        formData.appKnowledge.length === 0 && (
+                          <span className="text-red-200 text-xs">
+                            Vui lòng chọn kỹ năng
+                          </span>
+                        )}
                     </div>
 
                     <div>
                       <Textarea
                         placeholder="Liệt kê 3 mục đích anh chị muốn đạt được qua khóa học này"
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 rounded-2xl min-h-[100px] resize-none"
+                        name="learningGoals"
+                        value={formData.learningGoals}
+                        onChange={handleChange}
+                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-white/40 rounded-2xl min-h-[100px] resize-none ${
+                          status === "error" && !formData.learningGoals
+                            ? "border-red-500"
+                            : ""
+                        }`}
+                        required
                       />
+                      {status === "error" && !formData.learningGoals && (
+                        <span className="text-red-200 text-xs">
+                          Vui lòng nhập mục tiêu học tập
+                        </span>
+                      )}
                     </div>
                   </div>
 
                   <Button
                     type="submit"
+                    disabled={status === "loading"}
                     className="w-full bg-white text-blue-700 hover:bg-gray-100 font-semibold h-12 rounded-full text-lg mt-8"
                   >
                     Đăng ký
                   </Button>
+                  {formError && (
+                    <div className="text-red-200 text-sm mt-2">{formError}</div>
+                  )}
                 </form>
               </div>
             </Card>

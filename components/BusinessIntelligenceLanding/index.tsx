@@ -1,7 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import React from "react";
+import { useSubmitForm } from "@/hooks/use-saveInfoUser";
 
 export default function BusinessIntelligenceLanding() {
   const features = [
@@ -31,6 +34,40 @@ export default function BusinessIntelligenceLanding() {
         "Utilize multiple amazing intelligence tools to automate reports, increasing efficiency and reducing manual effort through intelligent automation",
     },
   ];
+
+  const { submit, status, error } = useSubmitForm();
+
+  const [formData, setFormData] = React.useState({
+    companyName: "",
+    contactName: "",
+    jobTitle: "",
+    phone: "",
+    email: "",
+    formType: "doanh-nghiep",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await submit(formData);
+    if (status === "success") {
+      setFormData({
+        companyName: "",
+        contactName: "",
+        jobTitle: "",
+        phone: "",
+        email: "",
+        formType: "doanh-nghiep",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 container">
@@ -81,10 +118,13 @@ export default function BusinessIntelligenceLanding() {
                     Form Đăng ký
                   </h2>
 
-                  <form className="space-y-6">
+                  <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                       <Input
                         placeholder="Tên Quy doanh nghiệp"
+                        name="companyName"
+                        value={formData.companyName}
+                        onChange={handleChange}
                         className="h-12 rounded-full border-gray-200 bg-gray-50 focus:bg-white transition-colors"
                       />
                     </div>
@@ -92,6 +132,9 @@ export default function BusinessIntelligenceLanding() {
                     <div>
                       <Input
                         placeholder="Tên người liên hệ"
+                        name="contactName"
+                        value={formData.contactName}
+                        onChange={handleChange}
                         className="h-12 rounded-full border-gray-200 bg-gray-50 focus:bg-white transition-colors"
                       />
                     </div>
@@ -99,6 +142,9 @@ export default function BusinessIntelligenceLanding() {
                     <div>
                       <Input
                         placeholder="Chức vụ công việc"
+                        name="jobTitle"
+                        value={formData.jobTitle}
+                        onChange={handleChange}
                         className="h-12 rounded-full border-gray-200 bg-gray-50 focus:bg-white transition-colors"
                       />
                     </div>
@@ -106,6 +152,9 @@ export default function BusinessIntelligenceLanding() {
                     <div>
                       <Input
                         placeholder="Số điện thoại liên hệ"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
                         className="h-12 rounded-full border-gray-200 bg-gray-50 focus:bg-white transition-colors"
                       />
                     </div>
@@ -114,12 +163,16 @@ export default function BusinessIntelligenceLanding() {
                       <Input
                         type="email"
                         placeholder="Email liên hệ"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         className="h-12 rounded-full border-gray-200 bg-gray-50 focus:bg-white transition-colors"
                       />
                     </div>
 
                     <Button
                       type="submit"
+                      disabled={status === "loading"}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-12 rounded-full text-lg mt-8"
                     >
                       Đăng ký
@@ -129,8 +182,6 @@ export default function BusinessIntelligenceLanding() {
               </Card>
             </div>
           </div>
-
-          {/* Right Column - Registration Form */}
         </div>
       </div>
     </div>

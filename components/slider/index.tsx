@@ -15,7 +15,7 @@ const courses = [
     title: "React Cơ Bản",
     image: "/images/Group1.png",
     color: "086CE8",
-    path: "data-storytelling",
+    path: "business-intelligence",
   },
   {
     id: 2,
