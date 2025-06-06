@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
+import { formatLinkImage } from "@/app/student-profile/[id]/page";
 
 interface ProjectPostProps {
   dashboard: {
@@ -9,6 +10,7 @@ interface ProjectPostProps {
     author: string;
     authorId: string | number;
     date: string;
+    thumbnail?: string;
   };
 }
 
@@ -22,13 +24,25 @@ const ProjectPost: React.FC<{ dashboard: ProjectPostProps["dashboard"] }> = ({
     <CardContent className="p-0">
       <div className="relative">
         <div className="bg-gradient-to-br from-blue-900 to-blue-700 rounded-t-lg overflow-hidden">
+          {/* {dashboard.thumbnail ? (
+            <img
+              src={dashboard.thumbnail || "/images/image-detail.png"}
+              alt={dashboard.title}
+              width={240}
+              height={120}
+              className="w-full h-auto opacity-90"
+            />
+          ) : ( */}
           <Image
-            src={"/images/image-detail.png"}
+            src={
+              formatLinkImage(dashboard.thumbnail) || "/images/image-detail.png"
+            }
             alt={dashboard.title}
             width={240}
             height={120}
             className="w-full h-auto opacity-90"
           />
+          {/* )} */}
         </div>
       </div>
       <div className="p-3">

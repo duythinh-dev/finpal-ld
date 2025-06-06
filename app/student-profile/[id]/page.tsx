@@ -7,6 +7,14 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+export const formatLinkImage = (link: string | undefined) => {
+  if (!link) return "";
+  return link.replace(
+    "github.com/MrTrongDo/DataTecHub/blob/main/",
+    "raw.githubusercontent.com/MrTrongDo/DataTecHub/main/"
+  );
+};
+
 export default function StudentProfile({
   params,
 }: {
@@ -172,14 +180,6 @@ export default function StudentProfile({
     );
   };
 
-  const formatLinkImage = (link: string | undefined) => {
-    if (!link) return "";
-    return link.replace(
-      "github.com/MrTrongDo/DataTecHub/blob/main/",
-      "raw.githubusercontent.com/MrTrongDo/DataTecHub/main/"
-    );
-  };
-
   const listProjectsOfOwner = listProjects.filter(
     (project) => project.Owner_ID === id
   );
@@ -336,6 +336,7 @@ export default function StudentProfile({
                   author: dashboard.Owner_Name,
                   date: new Date(dashboard.Created_at).toLocaleDateString(),
                   authorId: dashboard.Owner_ID,
+                  thumbnail: dashboard.Dashboard_Thumbnail,
                 }}
               />
             ))}

@@ -114,6 +114,7 @@ export default function DashboardDetail({
               )}`,
               url: item.Dashboard_Link,
               description: item.Description || "No description available",
+              thumbnail: item.Dashboard_Thumbnail,
             };
           })
         );
@@ -356,6 +357,7 @@ export default function DashboardDetail({
                     author: dashboard.author,
                     date: dashboard.date,
                     authorId: dashboard.authorId,
+                    thumbnail: dashboard.thumbnail,
                   }}
                 />
               ))}

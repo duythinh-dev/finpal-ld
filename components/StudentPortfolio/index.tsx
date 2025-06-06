@@ -29,6 +29,7 @@ export default function StudentPortfolio() {
               image: `/placeholder.svg?height=200&width=350&text=${encodeURIComponent(
                 item.Dashboard_Name
               )}`,
+              thumbnail: item.Dashboard_Thumbnail,
             };
           })
         );
@@ -155,6 +156,7 @@ export default function StudentPortfolio() {
                 author: project.author,
                 date: project.date,
                 authorId: project.authorId,
+                thumbnail: project.thumbnail,
               }}
             />
           ))}
