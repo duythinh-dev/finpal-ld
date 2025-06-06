@@ -1,15 +1,4 @@
-import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import {
-  Check,
-  BarChart3,
-  Database,
-  LineChart,
-  PieChart,
-  ArrowRight,
-} from "lucide-react";
 import CourseSlider from "@/components/slider";
 import BusinessIntelligenceLanding from "@/components/BusinessIntelligenceLanding";
 import AnalyticsCapabilities from "@/components/AnalyticsCapabilities";
@@ -55,7 +44,7 @@ export default function Home() {
           <CourseSlider />
         </div>
       </section>
-      <section className="min-h-screen">
+      <section className="min-h-screen ">
         <BusinessIntelligenceLanding />
       </section>
       {/* AnalyticsCapabilities */}

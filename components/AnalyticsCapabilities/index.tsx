@@ -4,41 +4,41 @@ import Image from "next/image";
 export default function AnalyticsCapabilities() {
   const capabilities = [
     {
-      title: "Building analysis dashboard",
+      title: "Xây dựng Dashboard phân tích chuyên sâu",
       subtitle: "Amazing Intelligence Tools",
       description:
-        "Utilize multiple amazing intelligence tools to automate reports, increasing efficiency and reducing manual effort through intelligent automation",
+        "Tận dụng các công cụ phân tích thông minh hàng đầu để tự động hóa báo cáo, tối ưu hiệu suất và giảm thiểu thao tác thủ công nhờ vào khả năng tự động hóa thông minh.",
       bgGradient: "from-cyan-100 via-purple-100 to-orange-100",
       image: "/images/ss-3-1.svg",
     },
     {
-      title: "Data Storytelling",
+      title: "Kể chuyện bằng dữ liệu (Data Storytelling)",
       subtitle: "Visualized Charts",
       description:
-        "Hone your skills in data storytelling to communicate insights clearly and compellingly, making data accessible and actionable for stakeholders",
+        "Nâng cao kỹ năng truyền tải thông tin thông qua biểu đồ trực quan, giúp người xem dễ dàng hiểu và hành động dựa trên những gì dữ liệu thể hiện.",
       bgGradient: "from-blue-50 via-cyan-50 to-green-50",
       image: "/images/ss-3-2.svg",
     },
     {
-      title: "Getting deep insights from data",
+      title: "Khai thác insight từ dữ liệu phức tạp",
       subtitle: "Analysis framework",
       description:
-        "Develop the ability to extract meaningful insights from complex data sets, enabling data-driven decision-making",
+        "Áp dụng các khung phân tích chuyên sâu để rút ra những hiểu biết có giá trị từ dữ liệu, hỗ trợ ra quyết định dựa trên bằng chứng rõ ràng.",
       bgGradient: "from-purple-100 via-cyan-50 to-green-50",
       image: "/images/ss-3-3.svg",
     },
     {
-      title: "Understanding business models",
+      title: "Hiểu rõ mô hình kinh doanh",
       subtitle: "Business models",
       description:
-        "Gain a deep understanding of business models and how to analyze them effectively to drive strategic decisions",
+        "Trang bị kiến thức nền tảng và kỹ năng phân tích mô hình kinh doanh để đưa ra các chiến lược phù hợp và định hướng phát triển hiệu quả.",
       bgGradient: "from-blue-50 via-cyan-50 to-green-50",
       image: "/images/ss-3-4.svg",
     },
   ];
 
   return (
-    <div className="bg-white pb-20 ">
+    <div className="bg-white pb-20">
       <div className="contaier mx-auto ">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-600 mb-8">
@@ -46,7 +46,7 @@ export default function AnalyticsCapabilities() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto px-4">
           {capabilities.map((capability, index) => (
             <Card
               key={index}

@@ -9,29 +9,29 @@ import { useSubmitForm } from "@/hooks/use-saveInfoUser";
 export default function BusinessIntelligenceLanding() {
   const features = [
     {
-      title: "Understanding business models",
+      title: "Hiểu rõ mô hình kinh doanh",
       description:
-        "Gain a deep understanding of business models and how to analyze them effectively to drive strategic decisions",
+        "Trang bị kiến thức nền tảng và kỹ năng phân tích mô hình kinh doanh để đưa ra các chiến lược phù hợp và định hướng phát triển hiệu quả.",
     },
     {
-      title: "Implementing intelligence analysis",
+      title: "Ứng dụng phân tích thông minh",
       description:
-        "Do advanced intelligence analysis methods to uncover hidden patterns and insights that can transform business operations",
+        "Áp dụng các phương pháp phân tích nâng cao nhằm khám phá các mô hình ẩn và những insights có thể tạo ra sự chuyển đổi trong hoạt động doanh nghiệp.",
     },
     {
-      title: "Getting deep insights from data",
+      title: "Khai thác insight từ dữ liệu phức tạp",
       description:
-        "Develop the ability to extract meaningful insights from complex data sets, enabling data-driven decision-making",
+        "Áp dụng các khung phân tích chuyên sâu để rút ra những hiểu biết có giá trị từ dữ liệu, hỗ trợ ra quyết định dựa trên bằng chứng rõ ràng.",
     },
     {
-      title: "Data Storytelling",
+      title: "Kể chuyện bằng dữ liệu (Data Storytelling)",
       description:
-        "Hone your skills in data storytelling to communicate insights clearly and compellingly, making data accessible and actionable for stakeholders",
+        "Nâng cao kỹ năng truyền tải thông tin thông qua biểu đồ trực quan, giúp người xem dễ dàng hiểu và hành động dựa trên những gì dữ liệu thể hiện.",
     },
     {
-      title: "Building advanced analysis dashboard",
+      title: "Xây dựng dashboard phân tích nâng cao",
       description:
-        "Utilize multiple amazing intelligence tools to automate reports, increasing efficiency and reducing manual effort through intelligent automation",
+        "Tận dụng các công cụ phân tích thông minh hàng đầu để tự động hóa báo cáo, tối ưu hiệu suất và giảm thiểu thao tác thủ công nhờ vào khả năng tự động hóa thông minh.",
     },
   ];
 
@@ -70,7 +70,7 @@ export default function BusinessIntelligenceLanding() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 container">
+    <div className="min-h-screen bg-white py-12 md:container">
       <div className="mx-auto px-4 space-y-12">
         <div className="space-y-4">
           <div className="flex items-center gap-3">
@@ -84,7 +84,7 @@ export default function BusinessIntelligenceLanding() {
           </div>
 
           <p className="text-gray-600 text-lg">
-            Empowering your workforce to achieve higher levels of competence
+            Nâng cao đội ngũ của bạn để đạt được năng lực vượt trội
           </p>
         </div>
         <div className="space-y-8">
@@ -112,7 +112,7 @@ export default function BusinessIntelligenceLanding() {
               ))}
             </div>
             <div className="lg:sticky lg:top-6 h-fit">
-              <Card className="border-0 shadow-lg bg-white">
+              <Card className="border-0 shadow-lg bg-whit">
                 <CardContent className="p-8">
                   <h2 className="text-xl font-bold text-gray-700 mb-8 text-center">
                     Form Đăng ký

@@ -22,9 +22,10 @@ import {
   GraduationCap,
   User,
   Check,
+  Building2,
 } from "lucide-react";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { use } from "react";
 import { useSubmitForm } from "@/hooks/use-saveInfoUser";
 import {
   Popover,
@@ -315,8 +316,12 @@ const courses: Record<string, Course> = {
   },
 };
 
-export default function CoursePage({ params }: { params: { id: string } }) {
-  const courseId = params.id;
+export default function CoursePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id: courseId } = use(params);
   const course = courses[courseId as keyof typeof courses];
   const { submit, status, error } = useSubmitForm();
 
@@ -572,38 +577,50 @@ export default function CoursePage({ params }: { params: { id: string } }) {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">
                     {course.instructor.name}
                   </h3>
 
-                  <p className={`${colorScheme.text} font-medium mb-2`}>
-                    {course.instructor.title}
-                  </p>
-
-                  <p className="text-gray-600 mb-4">
-                    tại {course.instructor.company}, với hơn{" "}
-                    {course.instructor.experience}
-                  </p>
-
-                  <div className="text-left w-full space-y-2">
-                    <p className="text-sm text-gray-700 mb-2">
-                      Ngoài ra anh là:
+                  <div className="text-gray-700">
+                    {/* Main Introduction */}
+                    <p className="text-start">
+                      Anh <span className="font-semibold">Trọng</span> hiện đang
+                      là{" "}
+                      <span className="font-semibold ">
+                        Performance Management & Analysis Manager
+                      </span>{" "}
+                      tại Prudential Vietnam, với hơn 8 năm kinh nghiệm phân
+                      tích trong các lĩnh vực Tài chính ngân hàng, Bảo hiểm, Sản
+                      xuất. Ngoài ra anh là:
                     </p>
-                    <ul className="space-y-1">
-                      {course.instructor.achievements.map(
-                        (achievement, index) => (
-                          <li
-                            key={index}
-                            className="text-sm text-gray-700 flex items-start gap-2"
-                          >
-                            <div
-                              className={`w-1 h-1 ${colorScheme.primary} rounded-full mt-2 flex-shrink-0`}
-                            ></div>
-                            <span>{achievement}</span>
-                          </li>
-                        )
-                      )}
-                    </ul>
+
+                    {/* Achievements List */}
+                    <div className="space-y-1 ml-2 md:ml-6">
+                      <ul className="list-disc ml-6 text-left space-y-2">
+                        <li>
+                          <span className="font-semibold text-gray-800">
+                            CEO & Founder
+                          </span>{" "}
+                          của <span className="font-semibold">FINPAL</span> -
+                          Fintech phân tích tài chính -{" "}
+                          <span>Finpal.com.vn</span>
+                        </li>
+                        <li>
+                          <span className="font-semibold text-gray-800">
+                            Founder
+                          </span>{" "}
+                          của <span className="font-semibold">DataTecHub</span>{" "}
+                          - Nền tảng giáo dục và tư vấn Business Intelligence
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Technical Expertise */}
+                    <p className="text-start">
+                      Anh có kinh nghiệm kiến trúc sư dữ liệu cũng như ứng dụng
+                      các công cụ BI tự động hóa (RPA - robotic process
+                      automation) lên tới 90% công việc xử lý dữ liệu
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -923,7 +940,7 @@ export default function CoursePage({ params }: { params: { id: string } }) {
                   <Button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full bg-white text-blue-700 hover:bg-gray-100 font-semibold h-12 rounded-full text-lg mt-8"
+                    className={`w-full bg-white  hover:bg-gray-100 font-semibold h-12 rounded-full text-lg mt-8 ${course.colorScheme?.text}`}
                   >
                     Đăng ký
                   </Button>
