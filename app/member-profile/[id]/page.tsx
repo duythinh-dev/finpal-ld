@@ -2,9 +2,7 @@
 import ProjectPost from "@/components/ProjectPost";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Share2, User, CheckCircle } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { User } from "lucide-react";
 import React from "react";
 
 export const formatLinkImage = (link: string | undefined) => {
