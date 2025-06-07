@@ -144,7 +144,7 @@ export default function StudentProfile({
                     width={180}
                     height={180}
                     alt="Student Profile"
-                    className="w-full h-full rounded-full object-cover"
+                    className="w-full h-full rounded-full object-contain"
                   />
                 </div>
               </div>

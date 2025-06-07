@@ -37,7 +37,7 @@ export default function Avatar({
           alt={name}
           width={size === "lg" ? 40 : size === "md" ? 32 : 24}
           height={size === "lg" ? 40 : size === "md" ? 32 : 24}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       ) : (
         <span className="font-medium">{name.split("")[0]}</span>

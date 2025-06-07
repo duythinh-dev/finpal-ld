@@ -2,6 +2,7 @@
 import { Badge } from "@/components/ui/badge";
 import React from "react";
 import ProjectPost from "../ProjectPost";
+import { formatLinkImage } from "@/app/member-profile/[id]/page";
 
 export default function StudentPortfolio() {
   const [listProjects, setListProjects] = React.useState<any[]>([]);
@@ -14,6 +15,9 @@ export default function StudentPortfolio() {
       .then((data) => {
         setListProjects(
           data.dim_dashboard.map((item: any) => {
+            const linkAvatar = data.dim_dbowner.find(
+              (el: any) => el.Owner_ID === item.Owner_ID
+            ).Owner_AvatarLink;
             return {
               id: item.Index,
               title: item.Dashboard_Name,
@@ -30,7 +34,7 @@ export default function StudentPortfolio() {
                 item.Dashboard_Name
               )}`,
               thumbnail: item.Dashboard_Thumbnail,
-              avatar: item.Owner_AvatarLink,
+              avatar: linkAvatar,
             };
           })
         );
@@ -62,7 +66,7 @@ export default function StudentPortfolio() {
                 date: project.date,
                 authorId: project.authorId,
                 thumbnail: project.thumbnail,
-                avatar: project.avatar,
+                avatar: formatLinkImage(project.avatar),
               }}
             />
           ))}

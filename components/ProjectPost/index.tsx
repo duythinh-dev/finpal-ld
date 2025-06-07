@@ -27,7 +27,7 @@ const ProjectPost: React.FC<{ dashboard: ProjectPostProps["dashboard"] }> = ({
 
   // ... bên trong hàm handleShare của bạn
   const handleShare = () => {
-    const detailLink = `<span class="math-inline">\{window\.location\.origin\}/detail/</span>{dashboard.id}`;
+    const detailLink = `${window.location.origin}/detail/${dashboard.id}`;
 
     navigator.clipboard
       .writeText(detailLink)

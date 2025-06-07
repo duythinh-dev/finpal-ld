@@ -95,6 +95,9 @@ export default function DashboardDetail({
         setLoading(false);
         setListProjects(
           data.dim_dashboard.map((item: any) => {
+            const linkAvatar = data.dim_dbowner.find(
+              (el: any) => el.Owner_ID === item.Owner_ID
+            ).Owner_AvatarLink;
             return {
               id: item.Index,
               title: item.Dashboard_Name,
@@ -113,7 +116,7 @@ export default function DashboardDetail({
               url: item.Dashboard_Link,
               description: item.Description || "No description available",
               thumbnail: item.Dashboard_Thumbnail,
-              avatar: item.Owner_AvatarLink,
+              avatar: linkAvatar,
             };
           })
         );
@@ -359,7 +362,7 @@ export default function DashboardDetail({
                     date: dashboard.date,
                     authorId: dashboard.authorId,
                     thumbnail: dashboard.thumbnail,
-                    avatar: dashboard.avatar,
+                    avatar: formatLinkImage(dashboard.avatar),
                   }}
                 />
               ))}
