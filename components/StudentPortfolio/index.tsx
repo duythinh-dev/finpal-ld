@@ -30,6 +30,7 @@ export default function StudentPortfolio() {
                 item.Dashboard_Name
               )}`,
               thumbnail: item.Dashboard_Thumbnail,
+              avatar: item.Owner_AvatarLink,
             };
           })
         );
@@ -38,102 +39,6 @@ export default function StudentPortfolio() {
         console.error("Error fetching projects:", error);
       });
   }, []);
-
-  const DashboardPreview = ({ type }: { type: string }) => {
-    return (
-      <div className="relative w-full h-48 bg-gradient-to-br from-blue-900 to-blue-700 rounded-lg overflow-hidden">
-        {/* Header */}
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-center">
-          <Badge className="bg-yellow-500 text-black text-xs px-2 py-1">
-            Power BI
-          </Badge>
-          <div className="text-white text-xs">Sales Overview</div>
-        </div>
-
-        {/* Main content area */}
-        <div className="absolute top-12 left-3 right-3 bottom-3 space-y-3">
-          {/* Charts area */}
-          <div className="grid grid-cols-3 gap-2 h-20">
-            {/* Line chart */}
-            <div className="bg-blue-800/50 rounded p-2">
-              <div className="text-white text-xs mb-1">Revenue</div>
-              <svg className="w-full h-8" viewBox="0 0 60 20">
-                <polyline
-                  fill="none"
-                  stroke="#fbbf24"
-                  strokeWidth="2"
-                  points="0,15 15,10 30,12 45,5 60,8"
-                />
-              </svg>
-            </div>
-
-            {/* Bar chart */}
-            <div className="bg-blue-800/50 rounded p-2">
-              <div className="text-white text-xs mb-1">Sales</div>
-              <div className="flex items-end justify-between h-8 gap-1">
-                <div className="w-2 h-6 bg-yellow-400 rounded-t"></div>
-                <div className="w-2 h-4 bg-yellow-400 rounded-t"></div>
-                <div className="w-2 h-8 bg-yellow-400 rounded-t"></div>
-                <div className="w-2 h-3 bg-yellow-400 rounded-t"></div>
-                <div className="w-2 h-5 bg-yellow-400 rounded-t"></div>
-              </div>
-            </div>
-
-            {/* Pie chart */}
-            <div className="bg-blue-800/50 rounded p-2 flex items-center justify-center">
-              <svg className="w-8 h-8" viewBox="0 0 42 42">
-                <circle
-                  cx="21"
-                  cy="21"
-                  r="15.915"
-                  fill="transparent"
-                  stroke="#1e40af"
-                  strokeWidth="3"
-                />
-                <circle
-                  cx="21"
-                  cy="21"
-                  r="15.915"
-                  fill="transparent"
-                  stroke="#fbbf24"
-                  strokeWidth="3"
-                  strokeDasharray="60 40"
-                  strokeDashoffset="25"
-                />
-                <circle
-                  cx="21"
-                  cy="21"
-                  r="15.915"
-                  fill="transparent"
-                  stroke="#10b981"
-                  strokeWidth="3"
-                  strokeDasharray="25 75"
-                  strokeDashoffset="-35"
-                />
-              </svg>
-            </div>
-          </div>
-
-          {/* Data table simulation */}
-          <div className="bg-blue-800/30 rounded p-2 space-y-1">
-            <div className="flex justify-between text-white text-xs">
-              <span>Product</span>
-              <span>Sales</span>
-            </div>
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="flex justify-between text-blue-200 text-xs"
-              >
-                <span>Item {i}</span>
-                <span>${(Math.random() * 1000).toFixed(0)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="py-16 bg-white">
@@ -157,6 +62,7 @@ export default function StudentPortfolio() {
                 date: project.date,
                 authorId: project.authorId,
                 thumbnail: project.thumbnail,
+                avatar: project.avatar,
               }}
             />
           ))}

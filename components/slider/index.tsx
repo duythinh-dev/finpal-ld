@@ -7,7 +7,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import Link from "next/link";
-import path from "path";
 
 const courses = [
   {

@@ -121,7 +121,7 @@ export default function BusinessIntelligenceLanding() {
                   <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                       <Input
-                        placeholder="Tên Quy doanh nghiệp"
+                        placeholder="Tên Quý doanh nghiệp"
                         name="companyName"
                         value={formData.companyName}
                         onChange={handleChange}

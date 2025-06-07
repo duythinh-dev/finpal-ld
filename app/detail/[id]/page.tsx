@@ -1,25 +1,17 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  ChevronDown,
-  ChevronUp,
-  Expand,
-  Heart,
-  Lightbulb,
-  Share2,
-  X,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Expand, Lightbulb, X } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import React, { useState } from "react";
 import ProjectPost from "@/components/ProjectPost";
+import Avatar from "@/components/Avatar";
+import { formatLinkImage } from "@/app/member-profile/[id]/page";
 
 export default function DashboardDetail({
   params,
@@ -40,10 +32,16 @@ export default function DashboardDetail({
     },
     dashboardStructure: [],
   });
+  type Member = { Owner_ID: string; [key: string]: any };
+  const [infoMember, setInfoMember] = React.useState<Member[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   const infoProject = listProjects.find(
     (project) => project.id.toString() === id
+  );
+
+  const infoMemberDetail = infoMember.find(
+    (e) => e.Owner_ID === infoProject.authorId
   );
 
   // Filter out the current project from the list for related projects and get 2 items
@@ -115,9 +113,11 @@ export default function DashboardDetail({
               url: item.Dashboard_Link,
               description: item.Description || "No description available",
               thumbnail: item.Dashboard_Thumbnail,
+              avatar: item.Owner_AvatarLink,
             };
           })
         );
+        setInfoMember(data.dim_dbowner);
         handleMappingListMoreInfo(data);
       })
       .catch((error) => {
@@ -133,13 +133,13 @@ export default function DashboardDetail({
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-500">Loading...</div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen  py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Dashboard Header */}
         <div className="flex items-center justify-between mb-4">
@@ -150,10 +150,11 @@ export default function DashboardDetail({
                 {infoProject?.title || "Dashboard Title"}
               </h1>
               <div className="flex items-center gap-2 text-sm text-gray-500">
-                <div className="w-5 h-5 bg-gray-300 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-medium">N</span>
-                </div>
-                <Link href={`/student-profile/${infoProject?.authorId || ""}`}>
+                <Avatar
+                  name={infoProject?.author || ""}
+                  imageUrl={formatLinkImage(infoMemberDetail?.Owner_AvatarLink)}
+                />
+                <Link href={`/member-profile/${infoProject?.authorId || ""}`}>
                   {infoProject?.author || ""}
                 </Link>
                 <span>•</span>
@@ -358,6 +359,7 @@ export default function DashboardDetail({
                     date: dashboard.date,
                     authorId: dashboard.authorId,
                     thumbnail: dashboard.thumbnail,
+                    avatar: dashboard.avatar,
                   }}
                 />
               ))}

@@ -24,7 +24,6 @@ export default function StudentProfile({
   // Fetch profile information based on the ID from params
   const [profileInfo, setProfileInfo] = React.useState<Owner | null>(null);
   const [listProjects, setListProjects] = React.useState<any[]>([]);
-  console.log("Profile ID:", id, "Profile Info:", profileInfo);
   const [loading, setLoading] = React.useState(true);
 
   interface Owner {
@@ -59,10 +58,21 @@ export default function StudentProfile({
       .then((response) => response.json())
       .then((data) => {
         setLoading(false);
-        setProfileInfo(
-          data.dim_dbowner.find((owner: Owner) => owner.Owner_ID === id)
+        const prfInfo = data.dim_dbowner.find(
+          (owner: Owner) => owner.Owner_ID === id
         );
-        setListProjects(data.dim_dashboard);
+        setProfileInfo(prfInfo);
+        setListProjects(
+          data.dim_dashboard.map((e: any) => {
+            const linkAvatar = data.dim_dbowner.find(
+              (el: any) => el.Owner_ID === e.Owner_ID
+            ).Owner_AvatarLink;
+            return {
+              ...e,
+              Owner_AvatarLink: linkAvatar,
+            };
+          })
+        );
       })
       .catch((error) => {
         setLoading(false);
@@ -98,88 +108,6 @@ export default function StudentProfile({
     return result;
   };
 
-  const relatedDashboards = [
-    {
-      id: 1,
-      title: "Sales Performance Dashboard",
-      author: "Nguyen Van A",
-      date: "15.10.2024",
-      likes: 234,
-      type: "sales",
-    },
-    {
-      id: 2,
-      title: "Investment Analysis Dashboard",
-      author: "Nguyen Van A",
-      date: "13.10.2024",
-      likes: 189,
-      type: "investment",
-    },
-    {
-      id: 3,
-      title: "Sales Performance Dashboard",
-      author: "Nguyen Van A",
-      date: "12.10.2024",
-      likes: 156,
-      type: "sales",
-    },
-    {
-      id: 4,
-      title: "Investment Analysis Dashboard",
-      author: "Nguyen Van A",
-      date: "10.10.2024",
-      likes: 178,
-      type: "investment",
-    },
-  ];
-
-  const DashboardPreview = () => {
-    return (
-      <div className="relative w-full h-40 bg-gradient-to-br from-blue-900 to-blue-700 rounded-lg overflow-hidden">
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-center">
-          <Badge className="bg-yellow-500 text-black text-xs px-2 py-1">
-            Power BI
-          </Badge>
-          <div className="text-white text-xs">Sales Overview</div>
-        </div>
-        <div className="absolute top-10 left-3 right-3 bottom-3 grid grid-cols-3 gap-2">
-          <div className="bg-blue-800/50 rounded p-2">
-            <svg className="w-full h-8" viewBox="0 0 60 20">
-              <polyline
-                fill="none"
-                stroke="#fbbf24"
-                strokeWidth="2"
-                points="0,15 15,10 30,12 45,5 60,8"
-              />
-            </svg>
-          </div>
-          <div className="bg-blue-800/50 rounded p-2 flex items-end justify-between">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="w-2 bg-yellow-400"
-                style={{ height: `${Math.random() * 20 + 8}px` }}
-              ></div>
-            ))}
-          </div>
-          <div className="bg-blue-800/50 rounded p-2 flex items-center justify-center">
-            <svg className="w-8 h-8" viewBox="0 0 42 42">
-              <circle
-                cx="21"
-                cy="21"
-                r="15.915"
-                fill="transparent"
-                stroke="#fbbf24"
-                strokeWidth="3"
-                strokeDasharray="60 40"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const listProjectsOfOwner = listProjects.filter(
     (project) => project.Owner_ID === id
   );
@@ -193,7 +121,7 @@ export default function StudentProfile({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="flex items-center gap-2 mb-8">
@@ -216,7 +144,7 @@ export default function StudentProfile({
                     width={180}
                     height={180}
                     alt="Student Profile"
-                    className="w-full h-full rounded-full object-contain"
+                    className="w-full h-full rounded-full object-cover"
                   />
                 </div>
               </div>
@@ -256,14 +184,15 @@ export default function StudentProfile({
                   provide Business solutions services
                 </p>
               </div>
-              <Link
-                href="#"
+              <a
+                href={profileInfo?.Linkedin}
+                target="_blank"
                 className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
               >
                 <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
                   <span className="text-white text-sm font-bold">in</span>
                 </div>
-              </Link>
+              </a>
             </div>
 
             {/* Skills Grid */}
@@ -327,19 +256,22 @@ export default function StudentProfile({
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {listProjectsOfOwner.map((dashboard) => (
-              <ProjectPost
-                key={dashboard.Index}
-                dashboard={{
-                  id: dashboard.Index,
-                  title: dashboard.Dashboard_Name,
-                  author: dashboard.Owner_Name,
-                  date: new Date(dashboard.Created_at).toLocaleDateString(),
-                  authorId: dashboard.Owner_ID,
-                  thumbnail: dashboard.Dashboard_Thumbnail,
-                }}
-              />
-            ))}
+            {listProjectsOfOwner.map((dashboard) => {
+              return (
+                <ProjectPost
+                  key={dashboard.Index}
+                  dashboard={{
+                    id: dashboard.Index,
+                    title: dashboard.Dashboard_Name,
+                    author: dashboard.Owner_Name,
+                    date: new Date(dashboard.Created_at).toLocaleDateString(),
+                    authorId: dashboard.Owner_ID,
+                    thumbnail: dashboard.Dashboard_Thumbnail,
+                    avatar: formatLinkImage(dashboard.Owner_AvatarLink),
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

@@ -3,10 +3,11 @@ import CourseSlider from "@/components/slider";
 import BusinessIntelligenceLanding from "@/components/BusinessIntelligenceLanding";
 import AnalyticsCapabilities from "@/components/AnalyticsCapabilities";
 import StudentPortfolio from "@/components/StudentPortfolio";
+import FloatingRegisterButton from "@/components/FloatingRegisterButton";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen">
       <section className="lg:min-h-screen relative bg-cover bg-center">
         <Image
           src={"/images/Landing-1.png"}
@@ -54,7 +55,7 @@ export default function Home() {
       <section>
         <StudentPortfolio />
       </section>
-      {/* Footer */}
+      <FloatingRegisterButton />
     </main>
   );
 }

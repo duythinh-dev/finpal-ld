@@ -23,6 +23,8 @@ import {
   User,
   Check,
   Building2,
+  Calendar1,
+  CalendarX,
 } from "lucide-react";
 import { notFound } from "next/navigation";
 import React, { use } from "react";
@@ -43,13 +45,16 @@ type ColorScheme = {
 };
 
 type Course = {
-  title: string;
-  duration: string;
+  title?: string;
+  duration?: string;
   logo?: string; // Optional logo for the course
-  format: string;
-  tools: string[];
-  certificates: string[];
-  instructor: {
+  format?: string;
+  tools?: string[];
+  certificates?: string[];
+  code: string;
+  startTime?: string;
+  endTime?: string;
+  instructor?: {
     name: string;
     title: string;
     company: string;
@@ -57,7 +62,7 @@ type Course = {
     achievements: string[];
     image: string;
   };
-  curriculum: {
+  curriculum?: {
     title: string;
     items: string[];
   }[];
@@ -75,11 +80,8 @@ const options = [
 
 const courses: Record<string, Course> = {
   "business-intelligence": {
-    title: "BIA - Business Intelligence Analytics",
-    duration: "24 buổi (2 tiếng / buổi)",
     logo: "/images/storytelling-logo.svg",
-    format: "Online & Offline",
-    tools: ["Power BI", "SQL", "Power Query", "Advanced Excel"],
+    code: "TYPE001",
     certificates: ["Certificate", "Professional Profile"],
     colorScheme: {
       primary: "bg-blue-600",
@@ -102,69 +104,10 @@ const courses: Record<string, Course> = {
       ],
       image: "/placeholder.svg?height=200&width=200",
     },
-    curriculum: [
-      {
-        title: "Giới thiệu và Cơ bản",
-        items: [
-          "Giới thiệu về Business Intelligence và các công cụ sử dụng",
-          "Tổng quan về Advanced Excel - Các hàm cơ bản và nâng cao",
-          "Thực hành Advanced Excel - PivotTables và PivotCharts",
-        ],
-      },
-      {
-        title: "Làm sạch và Biến đổi Dữ liệu",
-        items: [
-          "Giới thiệu về Power Query - Kết nối và nhập dữ liệu",
-          "Làm sạch dữ liệu với Power Query - Các kỹ thuật cơ bản",
-          "Biến đổi dữ liệu với Power Query - Các kỹ thuật nâng cao",
-          "Thực hành Power Query - Tích hợp dữ liệu từ nhiều nguồn",
-        ],
-      },
-      {
-        title: "Truy vấn và Phân tích Dữ liệu với SQL",
-        items: [
-          "Giới thiệu về SQL - Các khái niệm cơ bản và cú pháp",
-          "Truy vấn cơ bản với SQL - SELECT, WHERE, JOIN",
-          "Truy vấn nâng cao với SQL - GROUP BY, HAVING, SUBQUERIES",
-          "Thực hành SQL - Tạo và quản lý cơ sở dữ liệu",
-        ],
-      },
-      {
-        title: "Tạo Báo cáo và Dashboard với Power BI",
-        items: [
-          "Giới thiệu về Power BI - Tổng quan về các đặc",
-          "Kết nối dữ liệu trong Power BI - Các nguồn dữ liệu phổ biến",
-          "Tạo báo cáo cơ bản với Power BI - Các biểu đồ cơ bản",
-          "Tạo dashboard tương tác với Power BI - Các kỹ thuật nâng cao",
-          "Thực hành Power BI - Tích hợp dữ liệu từ Power Query và SQL",
-        ],
-      },
-      {
-        title: "Dự báo và Phân tích Xu hướng",
-        items: [
-          "Phân tích xu hướng với Power BI - Các công cụ và kỹ thuật",
-          "Dự báo dữ liệu với Power BI - Các mô hình dự báo",
-          "Thực hành dự báo và phân tích xu hướng",
-          "Tối ưu hóa quy trình kinh doanh với BI",
-        ],
-      },
-      {
-        title: "Ứng dụng Thực tế và Tổng kết",
-        items: [
-          "Ứng dụng BI trong các ngành công nghiệp khác nhau - Case studies",
-          "Thực hành dự án BI - Phân tích và báo cáo dữ liệu thực tế",
-          "Tổng kết và đánh giá khóa học - Thảo luận và phản hồi",
-          "(Extra) Ứng dụng Analytical Thinking trong phân tích business cases",
-        ],
-      },
-    ],
   },
   "power-bi-analytics": {
-    title: "BIA - Power BI for Analytics",
-    duration: "24 buổi (2 tiếng / buổi)",
     logo: "/images/powerbi-logo.svg",
-    format: "Online & Offline",
-    tools: ["Power BI"],
+    code: "TYPE002",
     certificates: ["Certificate", "Professional Profile"],
     instructor: {
       name: "Trong Do Xuan, CMA, FMVA",
@@ -180,36 +123,7 @@ const courses: Record<string, Course> = {
       ],
       image: "/placeholder.svg?height=200&width=200",
     },
-    curriculum: [
-      {
-        title: "Tạo Báo cáo và Dashboard với Power BI",
-        items: [
-          "Giới thiệu về Power BI - Tổng quan về các đặc",
-          "Kết nối dữ liệu trong Power BI - Các nguồn dữ liệu phổ biến",
-          "Tạo báo cáo cơ bản với Power BI - Các biểu đồ cơ bản",
-          "Tạo dashboard tương tác với Power BI - Các kỹ thuật nâng cao",
-          "Thực hành Power BI - Tích hợp dữ liệu từ Power Query và SQL",
-        ],
-      },
-      {
-        title: "Dự báo và Phân tích Xu hướng",
-        items: [
-          "Phân tích xu hướng với Power BI - Các công cụ và kỹ thuật",
-          "Dự báo dữ liệu với Power BI - Các mô hình dự báo",
-          "Thực hành dự báo và phân tích xu hướng",
-          "Tối ưu hóa quy trình kinh doanh với BI",
-        ],
-      },
-      {
-        title: "Ứng dụng Thực tế và Tổng kết",
-        items: [
-          "Ứng dụng BI trong các ngành công nghiệp khác nhau - Case studies",
-          "Thực hành dự án BI - Phân tích và báo cáo dữ liệu thực tế",
-          "Tổng kết và đánh giá khóa học - Thảo luận và phản hồi",
-          "(Extra) Ứng dụng Analytical Thinking trong phân tích business cases",
-        ],
-      },
-    ],
+
     colorScheme: {
       primary: "bg-orange-600",
       gradient: "from-[#FEA409] to-[#986205]",
@@ -219,45 +133,9 @@ const courses: Record<string, Course> = {
     },
   },
   "sql-analytics": {
-    title: "BIA - SQL for Analytics",
-    duration: "24 buổi (2 tiếng / buổi)",
-    format: "Online & Offline",
     logo: "/images/sql-logo.svg",
-    tools: ["Power BI"],
+    code: "TYPE003",
     certificates: ["Certificate", "Professional Profile"],
-    instructor: {
-      name: "Trong Do Xuan, CMA, FMVA",
-      title: "Performance Management & Analysis Manager",
-      company: "Prudential Vietnam",
-      experience:
-        "8 năm kinh nghiệm phân tích trong các lĩnh vực Tài chính ngân hàng, Bảo hiểm, Sản xuất",
-      achievements: [
-        "CEO & Founder của FINPAL - Fintech phần tích tài chính",
-        "Finpal.com.vn",
-        "Founder của DataTecHub - Nền tảng giáo dục và tư vấn Business Intelligence",
-        "Anh có kinh nghiệm kiến trúc sư dữ liệu cũng như ứng dụng các công cụ BI từ dòng hóa (RPA - robotic process automation) lên tới 90% công việc xử lý dữ liệu",
-      ],
-      image: "/placeholder.svg?height=200&width=200",
-    },
-    curriculum: [
-      {
-        title: "Giới thiệu và Cơ bản",
-        items: [
-          "Giới thiệu về Business Intelligence và các công cụ sử dụng",
-          "Tổng quan về Advanced Excel - Các hàm cơ bản và nâng cao",
-          "Thực hành Advanced Excel - PivotTables và PivotCharts",
-        ],
-      },
-      {
-        title: "Truy vấn và Phân tích Dữ liệu với SQL",
-        items: [
-          "Giới thiệu về SQL - Các khái niệm cơ bản và cú pháp",
-          "Truy vấn cơ bản với SQL - SELECT, WHERE, JOIN",
-          "Truy vấn nâng cao với SQL - GROUP BY, HAVING, SUBQUERIES",
-          "Thực hành SQL - Tạo và quản lý cơ sở dữ liệu",
-        ],
-      },
-    ],
     colorScheme: {
       primary: "bg-purple-600",
       gradient: "from-purple-500 to-purple-600",
@@ -267,11 +145,8 @@ const courses: Record<string, Course> = {
     },
   },
   "advanced-excel": {
-    title: "BIA - Advanced Excel",
-    duration: "24 buổi (2 tiếng / buổi)",
+    code: "TYPE004",
     logo: "/images/excel-logo.svg",
-    format: "Online & Offline",
-    tools: ["Power BI"],
     certificates: ["Certificate", "Professional Profile"],
     instructor: {
       name: "Trong Do Xuan, CMA, FMVA",
@@ -287,25 +162,7 @@ const courses: Record<string, Course> = {
       ],
       image: "/placeholder.svg?height=200&width=200",
     },
-    curriculum: [
-      {
-        title: "Giới thiệu và Cơ bản",
-        items: [
-          "Giới thiệu về Business Intelligence và các công cụ sử dụng",
-          "Tổng quan về Advanced Excel - Các hàm cơ bản và nâng cao",
-          "Thực hành Advanced Excel - PivotTables và PivotCharts",
-        ],
-      },
-      {
-        title: "Truy vấn và Phân tích Dữ liệu với SQL",
-        items: [
-          "Giới thiệu về SQL - Các khái niệm cơ bản và cú pháp",
-          "Truy vấn cơ bản với SQL - SELECT, WHERE, JOIN",
-          "Truy vấn nâng cao với SQL - GROUP BY, HAVING, SUBQUERIES",
-          "Thực hành SQL - Tạo và quản lý cơ sở dữ liệu",
-        ],
-      },
-    ],
+
     colorScheme: {
       primary: "bg-green-600",
       gradient: "from-green-500 to-green-600",
@@ -323,9 +180,13 @@ export default function CoursePage({
 }) {
   const { id: courseId } = use(params);
   const course = courses[courseId as keyof typeof courses];
-  const { submit, status, error } = useSubmitForm();
+  const { submit, status } = useSubmitForm();
 
   const [formError, setFormError] = React.useState<string | null>(null);
+  const [infomation, setInfomation] = React.useState<Course | undefined>(
+    undefined
+  );
+  const [loading, setLoading] = React.useState(true);
 
   type FormData = {
     fullName: string;
@@ -351,8 +212,6 @@ export default function CoursePage({
     learningGoals: "",
   });
 
-  console.log("Course ID:", course);
-
   if (!course) {
     notFound();
   }
@@ -363,9 +222,7 @@ export default function CoursePage({
     const { name, value } = e.target;
 
     if (name === "appKnowledge") {
-      const newValue = value.split(",").map((v) => v.trim());
       setFormData((prev) => {
-        // prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
         return {
           ...prev,
           appKnowledge: prev.appKnowledge.includes(value)
@@ -412,8 +269,61 @@ export default function CoursePage({
     text: "text-blue-600",
   };
 
+  React.useEffect(() => {
+    const fetching = async () => {
+      setLoading(true);
+      await fetch(
+        "https://raw.githubusercontent.com/MrTrongDo/DataTecHub/main/Master_dashboard.json"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setLoading(false);
+          const dataCourseContent = data.dim_CourseContent[course.code];
+          const curriculum = Object.entries(
+            dataCourseContent.Course_Module
+          ).map(([title, items]) => ({
+            title,
+            items: items as string[],
+          }));
+
+          const resultSkill = Object.entries(dataCourseContent)
+            .filter(([_, value]) => value === "Y")
+            .map(([key, _]) => key.replace("_skill", ""));
+
+          setInfomation((prev) => ({
+            ...course,
+            duration: dataCourseContent.Course_Duration,
+            title: dataCourseContent.Course_Name,
+            format: dataCourseContent.Course_Type,
+            curriculum,
+            tools: resultSkill,
+            code: course.code,
+            logo: course.logo,
+            certificates: course.certificates ?? [],
+            instructor: course.instructor,
+            colorScheme: course.colorScheme,
+            startTime: dataCourseContent.Course_Started_at,
+            endTime: dataCourseContent.Course_Ended_at,
+          }));
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching projects:", error);
+        });
+    };
+    fetching();
+  }, []);
+
+  console.log(infomation, loading);
+  if (!infomation || loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-blue-600"></div>
+      </div>
+    );
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
@@ -424,7 +334,7 @@ export default function CoursePage({
               <CardHeader
                 className={` text-white h-64 flex flex-col justify-between`}
                 style={{
-                  backgroundImage: `url(${course.logo})`,
+                  backgroundImage: `url(${infomation.logo})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -432,7 +342,7 @@ export default function CoursePage({
                 <div className="flex items-center justify-between mb-4">
                   <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1">
                     <Image
-                      src={"/images/logo.png"}
+                      src={"/images/Logo.png"}
                       width={150}
                       height={100}
                       alt="Logo"
@@ -446,12 +356,12 @@ export default function CoursePage({
                 {/* Title nằm phía trên */}
                 <div className="relative z-10 p-4 flex items-center gap-4">
                   <div
-                    className={`h-6 border-4 w-1 ${course.colorScheme?.border}`}
+                    className={`h-6 border-4 w-1 ${infomation.colorScheme?.border}`}
                   ></div>
                   <h2
-                    className={`text-2xl font-bold ${course.colorScheme?.text}`}
+                    className={`text-2xl font-bold ${infomation.colorScheme?.text}`}
                   >
-                    {course.title}
+                    {infomation.title}
                   </h2>
                 </div>
               </CardHeader>
@@ -462,21 +372,30 @@ export default function CoursePage({
               <div className="flex items-center gap-3">
                 <Calendar className={`h-5 w-5 ${colorScheme.text}`} />
                 <span className="font-medium">Thời lượng:</span>
-                <span className="text-gray-700">{course.duration}</span>
+                <span className="text-gray-700">{infomation.duration}</span>
               </div>
 
               <div className="flex items-center gap-3">
                 <Monitor className="h-5 w-5 text-orange-500" />
                 <span className="font-medium">Hình thức:</span>
-                <span className="text-gray-700">{course.format}</span>
+                <span className="text-gray-700">{infomation.format}</span>
               </div>
-
+              <div className="flex items-center gap-3">
+                <Calendar1 className="h-5 w-5 text-green-500" />{" "}
+                <span className="font-medium">Bắt đầu (Dự kiến):</span>
+                <span className="text-gray-700">{infomation.startTime}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CalendarX className="h-5 w-5 text-red-500" />
+                <span className="font-medium">Kết thúc (Dự kiến):</span>
+                <span className="text-gray-700">{infomation.endTime}</span>
+              </div>
               <div className="flex items-start gap-3">
                 <GraduationCap className="h-5 w-5 text-purple-600 mt-1" />
                 <div>
                   <span className="font-medium">Công cụ:</span>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {course.tools.map((tool, index) => (
+                    {infomation.tools?.map((tool, index) => (
                       <Badge
                         key={index}
                         variant="outline"
@@ -494,7 +413,7 @@ export default function CoursePage({
                 <div>
                   <span className="font-medium">Chứng nhận:</span>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {course.certificates.map((cert, index) => (
+                    {infomation.certificates?.map((cert, index) => (
                       <Badge
                         key={index}
                         className="bg-green-100 text-green-800 border-green-200"
@@ -517,7 +436,7 @@ export default function CoursePage({
                 </h2>
               </CardHeader>
               <CardContent className="space-y-6">
-                {course.curriculum.map((section, sectionIndex) => (
+                {infomation.curriculum?.map((section, sectionIndex) => (
                   <div key={sectionIndex}>
                     <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <div
@@ -565,7 +484,7 @@ export default function CoursePage({
                       src={"/images/avarTrong.svg"}
                       width={150}
                       height={150}
-                      alt={course.instructor.name}
+                      alt={infomation.instructor?.name || ""}
                       className="rounded-full border-4 border-blue-100"
                     />
                     <div className="absolute -bottom-2 -right-2">
@@ -578,7 +497,7 @@ export default function CoursePage({
                   </div>
 
                   <h3 className="text-xl font-bold text-gray-900 mb-6">
-                    {course.instructor.name}
+                    {infomation.instructor?.name}
                   </h3>
 
                   <div className="text-gray-700">
@@ -940,7 +859,7 @@ export default function CoursePage({
                   <Button
                     type="submit"
                     disabled={status === "loading"}
-                    className={`w-full bg-white  hover:bg-gray-100 font-semibold h-12 rounded-full text-lg mt-8 ${course.colorScheme?.text}`}
+                    className={`w-full bg-white  hover:bg-gray-100 font-semibold h-12 rounded-full text-lg mt-8 ${infomation.colorScheme?.text}`}
                   >
                     Đăng ký
                   </Button>
