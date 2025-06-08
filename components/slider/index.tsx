@@ -12,28 +12,28 @@ const courses = [
   {
     id: 1,
     title: "React Cơ Bản",
-    image: "/images/Group1.png",
+    image: "Group1.png",
     color: "086CE8",
     path: "business-intelligence",
   },
   {
     id: 2,
     title: "NextJS Nâng Cao",
-    image: "/images/Group2.png",
+    image: "Group2.png",
     color: "FFC000",
     path: "power-bi-analytics",
   },
   {
     id: 3,
     title: "TypeScript Từ A-Z",
-    image: "/images/Group3.png",
+    image: "Group3.png",
     color: "B331E0",
     path: "sql-analytics",
   },
   {
     id: 4,
     title: "SEO Cho Front-End",
-    image: "/images/Group4.png",
+    image: "Group4.png",
     color: "34E031",
     path: "advanced-excel",
   },
@@ -58,7 +58,7 @@ const CourseSlider = () => {
             <SwiperSlide key={course.id}>
               <div className="relative w-full">
                 <img
-                  src={course.image}
+                  src={`https://raw.githubusercontent.com/MrTrongDo/DataTecHub/main/${course.image}`}
                   alt={course.title}
                   className="h-fit w-full object-cover"
                 />
@@ -79,7 +79,7 @@ const CourseSlider = () => {
           <div key={course.id} className="md:hidden mb-6">
             <div className="relative w-full">
               <img
-                src={course.image}
+                src={`https://raw.githubusercontent.com/MrTrongDo/DataTecHub/main/${course.image}`}
                 alt={course.title}
                 className="h-fit w-full object-cover"
               />

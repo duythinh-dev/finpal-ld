@@ -1,46 +1,32 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
 import React from "react";
 import ProjectPost from "../ProjectPost";
 import { formatLinkImage } from "@/app/member-profile/[id]/page";
 
 export default function StudentPortfolio() {
   const [listProjects, setListProjects] = React.useState<any[]>([]);
+  console.log(listProjects);
   React.useEffect(() => {
     // raw.githubusercontent.com/MrTrongDo/DataTecHub/main/Master_dashboard.json
     fetch(
       "https://raw.githubusercontent.com/MrTrongDo/DataTecHub/main/Master_dashboard.json"
     )
-      .then((response) => response.json())
+      .then((response) => {
+        try {
+          const data = response.json();
+          console.log(data);
+          return data;
+        } catch (error) {
+          console.log("er", error);
+          return;
+        }
+      })
       .then((data) => {
-        setListProjects(
-          data.dim_dashboard.map((item: any) => {
-            const linkAvatar = data.dim_dbowner.find(
-              (el: any) => el.Owner_ID === item.Owner_ID
-            ).Owner_AvatarLink;
-            return {
-              id: item.Index,
-              title: item.Dashboard_Name,
-              author: item.Owner_Name,
-              authorId: item.Owner_ID,
-              date: new Date(item.Created_at).toLocaleDateString("vi-VN", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              }),
-              likes: 0,
-              type: item.Challenge_Topic,
-              image: `/placeholder.svg?height=200&width=350&text=${encodeURIComponent(
-                item.Dashboard_Name
-              )}`,
-              thumbnail: item.Dashboard_Thumbnail,
-              avatar: linkAvatar,
-            };
-          })
-        );
+        console.log("data", data);
+        setListProjects([]);
       })
       .catch((error) => {
-        console.error("Error fetching projects:", error);
+        console.log("Error fetching projects:", error);
       });
   }, []);
 
