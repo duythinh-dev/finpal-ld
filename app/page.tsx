@@ -49,10 +49,10 @@ export default function Home() {
         <BusinessIntelligenceLanding />
       </section>
       {/* AnalyticsCapabilities */}
-      <section>
+      <section id="about">
         <AnalyticsCapabilities />
       </section>
-      <section>
+      <section id="member-project">
         <StudentPortfolio />
       </section>
       <FloatingRegisterButton />
