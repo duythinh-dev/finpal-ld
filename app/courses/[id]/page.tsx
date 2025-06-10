@@ -449,24 +449,30 @@ export default function CoursePage({
                         {section.title}
                       </h3>
                       <ol className="space-y-2 ml-4">
-                        {section.items.map((item, itemIndex) => (
-                          <li
-                            key={itemIndex}
-                            className="text-sm text-gray-700 flex gap-3"
-                          >
-                            <span
-                              className={`${colorScheme.text} font-medium min-w-[20px]`}
+                        {section.items.map((item, itemIndex) => {
+                          // Calculate the global index for the item
+                          const globalIndex =
+                            infomation.curriculum
+                              ?.slice(0, sectionIndex)
+                              .reduce(
+                                (acc, cur) => acc + cur.items.length,
+                                0
+                              ) ?? 0;
+                          const displayIndex = globalIndex + itemIndex + 1;
+                          return (
+                            <li
+                              key={itemIndex}
+                              className="text-sm text-gray-700 flex gap-3"
                             >
-                              {(courseId === "sql-analytics" ||
-                                courseId === "advanced-excel") &&
-                              sectionIndex === 1
-                                ? 8 + itemIndex
-                                : sectionIndex * 4 + itemIndex + 1}
-                              .
-                            </span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
+                              <span
+                                className={`${colorScheme.text} font-medium min-w-[20px]`}
+                              >
+                                {displayIndex}.
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          );
+                        })}
                       </ol>
                     </div>
                   ))}
